@@ -1,18 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" class="logo" src="../assets/logo.png">
+    <PassGenerator msg="Password Generator"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import PassGenerator from '@/components/PassGenerator.vue'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    PassGenerator
   }
 }
 </script>
+
+<style scoped>
+  .logo {
+    max-height: 60px;
+  }
+</style>
