@@ -43,13 +43,20 @@
       <div @click.stop.prevent="copyPassword" class="output">{{ password }}</div>
       <input type="hidden" id="copyPwd" :value="password">
     </div>
+
+    <Alert v-show="showAlert" v-bind:alertMessage="alertMessage"/>
        
   </div>
 </template>
 
 <script>
+import Alert from '@/components/Alert'
+
 export default {
   name: 'HelloWorld',
+  components: {
+    Alert
+  },
   props: {
     msg: String
   },
@@ -60,7 +67,9 @@ export default {
       lowLetters: false,
       upLetters: false,
       symbols: false,
-      password: ''
+      password: '',
+      alertMessage: '',
+      showAlert: false
     }
   },
   methods: {   
@@ -109,6 +118,8 @@ export default {
     }, 
     generatePass(){  
       this.password = ''
+      this.alertMessage = ''
+      this.showAlert = false
 
       if(this.numberOfChars <= 0){
         this.password = 'ERROR'
@@ -125,22 +136,29 @@ export default {
       pwd.select()
 
 
-      try {
-        var successful = document.execCommand('copy');
-        var msg = successful ? 'successful' : 'unsuccessful';
-        alert('Password was copied ' + msg);
-      } catch (error) {
-        alert(`Could not copy password! Error: ${error.message}`)
+      try {      
+        if(document.execCommand('copy')){
+          this.alertMessage = 'Password was copied'
+          this.showAlertMessage(2000)
+        }
+      } catch (error) {      
+        this.alertMessage = 'Could not copy password!'
+        this.showAlertMessage(2000)
       }
 
       pwd.setAttribute('type', 'hidden')
       window.getSelection().removeAllRanges()
+    },
+    showAlertMessage(secs){
+      this.showAlert = true
+      setTimeout(() => {
+        this.showAlert = false
+      }, secs)
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container, .output-container {
   display: flex;
